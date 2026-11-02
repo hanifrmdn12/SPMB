@@ -53,7 +53,7 @@
                 <span class="brand-text"><strong>SPMB SEKOLAH</strong><span>Sistem Pendaftaran Siswa</span></span>
             </a>
             <nav class="nav-links">
-                <a href="#tentang">Tentang</a><a href="#alur">Alur Pendaftaran</a><a href="{{ route('status.index') }}">Cek Status</a><a class="nav-admin" href="{{ route('admin.login') }}">Login Admin →</a>
+                <a href="#tentang">Tentang</a><a href="#alur">Alur Pendaftaran</a><a href="{{ route('status.index') }}">Cek Status</a><a class="nav-admin" href="{{ route('pendaftaran.formulir') }}">Daftar Sekarang →</a>
             </nav>
         </div>
     </header>
