@@ -39,6 +39,7 @@ Route::prefix('admin')->name('admin.')->group(function () {
 
 Route::prefix('status-pendaftaran')->name('status.')->group(function () {
     Route::get('/', [StatusPendaftaranController::class, 'index'])->name('index');
+    Route::get('/simulasi-whatsapp', [StatusPendaftaranController::class, 'simulasiWhatsApp'])->name('otp.simulasi');
     Route::post('/kirim-otp', [StatusPendaftaranController::class, 'kirimOtp'])->middleware('throttle:3,1')->name('otp.kirim');
     Route::post('/verifikasi-otp', [StatusPendaftaranController::class, 'verifikasiOtp'])->middleware('throttle:5,15')->name('otp.verifikasi');
     Route::get('/{pendaftaran:nomor_pendaftaran}', [StatusPendaftaranController::class, 'show'])->middleware('pendaftaran.access')->name('detail');

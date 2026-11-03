@@ -42,10 +42,17 @@ class StatusPendaftaranController extends Controller
             return back()->withInput()->withErrors(['nomor_pendaftaran' => $exception->getMessage()]);
         }
 
-        return to_route('status.index')
+        $redirect = to_route('status.index')
             ->with('otp_nomor', $nomor)
-            ->with('success', 'Kode OTP telah dikirim ke nomor WhatsApp pendaftar.')
-            ->when(app()->environment('local'), fn ($redirect) => $redirect->with('development_otp', $kode));
+            ->with('success', 'Kode OTP telah dikirim ke nomor WhatsApp pendaftar.');
+
+        if (app()->environment('local')) {
+            $redirect->with('development_otp', $kode);
+            $request->session()->put('otp_demo_code', $kode);
+            $request->session()->put('otp_demo_nomor', $nomor);
+        }
+
+        return $redirect;
     }
 
     public function verifikasiOtp(Request $request): RedirectResponse
@@ -71,6 +78,16 @@ class StatusPendaftaranController extends Controller
         $request->session()->put("pendaftaran_access.{$pendaftaran->id}", true);
 
         return $this->lanjutkanKeTahapAktif($pendaftaran);
+    }
+
+    public function simulasiWhatsApp(Request $request): View
+    {
+        abort_unless(app()->environment('local'), 404);
+
+        return view('status.simulasi-whatsapp', [
+            'kodeOtp' => $request->session()->get('otp_demo_code'),
+            'nomorPendaftaran' => $request->session()->get('otp_demo_nomor'),
+        ]);
     }
 
     public function show(Pendaftaran $pendaftaran): View
